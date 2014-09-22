@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jtool:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jtool_jar</output-path>
+    <root id="archive" name="jtool.jar">
+      <element id="module-output" name="jtool" />
+      <element id="extracted-dir" path="D:/netty-4.0.23.Final/jar/all-in-one/netty-all-4.0.23.Final.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
