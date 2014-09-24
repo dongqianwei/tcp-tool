@@ -55,7 +55,7 @@ public class Tool extends Application {
         });
         mthd.setDaemon(true);
         // test simple server
-        //mthd.start();
+        // mthd.start();
 
         launch();
         System.exit(1);
@@ -63,9 +63,14 @@ public class Tool extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("demo.fxml"));
         Parent root = loader.load();
         ToolControllor controllor = loader.getController();
+        primaryStage.setOnCloseRequest(e -> {
+            controllor.dump();
+        });
         controllor.init();
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

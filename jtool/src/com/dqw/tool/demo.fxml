@@ -6,7 +6,7 @@
    <bottom>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
-            <Button onAction="#send" mnemonicParsing="false" text="Send" />
+            <Button fx:id="sendBut" disable="true" onAction="#send" mnemonicParsing="false" text="Send" />
           <Button onAction="#clear" mnemonicParsing="false" text="Clear" />
         </items>
       </ToolBar>

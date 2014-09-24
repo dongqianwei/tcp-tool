@@ -13,6 +13,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+
 /**
  * Created by dqw on 9/23/2014.
  */
@@ -22,10 +29,12 @@ public class ToolControllor {
     public TextArea inputText;
     public TextArea logText;
     public Button connectBut;
+    public Button sendBut;
 
     private SocketChannel channel;
 
     private Bootstrap bs;
+    private final Path memPath = Paths.get(System.getProperty("user.dir")).resolve(".jtool.dat");
 
     public void init() {
         bs = new Bootstrap()
@@ -53,6 +62,19 @@ public class ToolControllor {
                         });
                     }
                 });
+        if (Files.exists(memPath))
+        {
+            try {
+                List<String> lines = Files.readAllLines(memPath);
+                if (lines.size() == 2) {
+                    this.address.setText(lines.get(0));
+                    this.port.setText(lines.get(1));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public void send(ActionEvent actionEvent) {
@@ -70,15 +92,27 @@ public class ToolControllor {
         if(channel != null && channel.isActive()) {
             channel.close();
             connectBut.setText("Connect");
+            sendBut.setDisable(true);
         }
         else {
 
             ChannelFuture future = bs.connect(address.getText(), Integer.valueOf(port.getText()));
             future.syncUninterruptibly();
-            if (future.isSuccess())
+            if (future.isSuccess()) {
+                sendBut.setDisable(false);
                 connectBut.setText("Disconnect");
+            }
             //bs.connect("127.0.0.1", 8080).syncUninterruptibly();
         }
     }
 
+    public void dump() {
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(memPath);
+            writer.write(address.getText() + System.lineSeparator() + port.getText());
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
